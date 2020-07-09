@@ -1,0 +1,40 @@
+{
+  "trainData": [
+    {
+      "input": {
+        "date": "2020-07-17T06:13:00.000Z",
+        "target": "槓鈴深蹲",
+        "weight": "1000",
+        "sets": "99",
+        "reps": "99",
+        "memo": ""
+      },
+      "volumn": 9801000,
+      "id": 1
+    },
+    {
+      "input": {
+        "date": "2020-07-16T06:14:00.000Z",
+        "target": "器械腿舉",
+        "weight": "11",
+        "sets": "11",
+        "reps": "11",
+        "memo": "tuck your elbow!!  heheheheheh"
+      },
+      "volumn": 1331,
+      "id": 2
+    },
+    {
+      "input": {
+        "target": "槓鈴深蹲",
+        "date": "2020-07-23T06:31:00.000Z",
+        "sets": "22",
+        "weight": "11",
+        "reps": "22",
+        "memo": ""
+      },
+      "volumn": 5324,
+      "id": 3
+    }
+  ]
+}
