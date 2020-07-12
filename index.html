@@ -7,9 +7,11 @@
     <style>
         *{
             font-family: 'Courier New', Courier, monospace;
+            background-color: rgb(133, 232, 174);
         }
         h1{
             text-align: center;
+            color: #fff;
         }
         .input{
             border: 2px solid #aaa;
@@ -27,13 +29,14 @@
            padding: 5px;
         }
         input{
-            margin-right: 5px;
-            margin-bottom: 10px;
+            margin: 5px 5px 10px 0;
             font-size: 16px;
             padding: 5px;
+            border-radius: 5px;
+            background-color: #fff;
         }
         button{
-            
+            background-color: #4189D4;
             padding: 5px;
         }
         .done{
@@ -45,8 +48,13 @@
         }
         .movement{
             flex: 1;
-            text-align: center;
+            /* display: inline-block; */
+            padding:0 15px;
         }
+        .memo{
+            flex: 1;
+        }
+        
     </style>
 </head>
 <body>
@@ -88,7 +96,7 @@
             <button @click="cancel">Cancel</button>
         </div>
         <div class="done" v-for="(item, index) in doneData" :key="index">
-            <span>{{item.input.date}}</span> <span class="movement">{{item.input.target}}: {{item.volumn}}KG</span><span >備註:{{item.input.memo? item.input.memo : '無'}}</span><button class="change" @click="changeHandler(index)">修改</button><button class="delete" @click='deleteHandler(index)'>刪除</button>
+            <span>{{item.input.date}}</span> <span class="movement">{{item.input.target}}: {{item.volumn}}KG</span><span class="memo">備註:{{item.input.memo? item.input.memo : '無'}}</span><button class="change" @click="changeHandler(index)">修改</button><button class="delete" @click='deleteHandler(index)'>刪除</button>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -148,19 +156,35 @@
             },
             methods: {
                 cancel: function(){
-                    // this.editIndex =
-                    // this.input = {}
+                    this.editIndex = null
+                    this.input = {
+                        target:'請選擇',
+                        date: new Date(),
+                        sets: '',
+                        weight: '',
+                        reps: '',
+                        memo:''
+                    }
                 },
                 done: function(){
                     if(!this.input.date || isNaN(this.volumn) || this.input.target=="請選擇") return
                     if(this.editIndex === null){
-                        axios.post('http://localhost:8888/trainData', {input: this.input, volumn: this.volumn})
-                          .then(res => {console.log('hihihi')})
+                        axios.post('https://protected-journey-27926.herokuapp.com/trainData', {input: this.input, volumn: this.volumn})
+                          .then(res => {
+                              console.log('hihihi')
+                              this.doneData.push(res.data)
+                              this.cancel()
+                              })
                           .catch(err => console.log(err))
                     }else{
                         let target = this.doneData[this.editIndex]
-                        axios.put('http://localhost:8888/trainData/' + target.id, {input: this.input, volumn: this.volumn})
-                          .then(res => {console.log('hihihiput')}) 
+                        axios.put('https://protected-journey-27926.herokuapp.com/trainData/' + target.id, {input: this.input, volumn: this.volumn})
+                          .then(res => {
+                              console.log(res)
+                              this.doneData[this.editIndex] = res.data
+                              this.cancel()
+                              console.log('hihihiput')
+                              }) 
                           .catch(err => console.log(err))
                     }
                 },
@@ -173,14 +197,17 @@
                 deleteHandler: function(index){
                     let target = this.doneData[index]
                     if(confirm('確定刪除嗎?')){
-                        axios.delete('http://localhost:8888/trainData/'+ target.id)
-                            .then(res => console.log(res))
+                        axios.delete('https://protected-journey-27926.herokuapp.com/trainData/'+ target.id)
+                            .then(res => {
+                                this.doneData.splice(index, 1)
+                                console.log(res)
+                                })
                             .catch(err=> console.log(err))
                     }
                 }
             },
             mounted() {
-             axios.get('http://localhost:8888/trainData')
+             axios.get('https://protected-journey-27926.herokuapp.com/trainData')
                 .then(res => {
                     this.doneData = res.data
                 })
