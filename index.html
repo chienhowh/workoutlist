@@ -5,18 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Work To Do</title>
     <style>
-        *{
+        body{
             font-family: 'Courier New', Courier, monospace;
-            background-color: rgb(133, 232, 174);
+            background-color: #41D2F2;
         }
         h1{
             text-align: center;
-            color: #fff;
+        }
+        #app{
+            width: 70%;
+            margin: auto;
         }
         .input{
             border: 2px solid #aaa;
+            border-radius: 15px;
             padding: 10px;
             margin-bottom: 10px;
+            background-color: #fff;
+
+            
         }
         .result{
             margin-top: 5px;
@@ -36,8 +43,13 @@
             background-color: #fff;
         }
         button{
-            background-color: #4189D4;
+            /* background-color: #4189D4; */
             padding: 5px;
+        }
+        .doneBox{
+            margin-top: 15px;
+            border-top: #aaa 2px solid;
+            padding-top: 10px;
         }
         .done{
             display: flex;
@@ -54,12 +66,17 @@
         .memo{
             flex: 1;
         }
-        
+        .part ul{
+            display: flex;
+        }
+        .part li{
+            list-style: none;
+        }
     </style>
 </head>
 <body>
     <div id="app">
-        <h1>今晚你想來點甚麼?</h1>
+        <h1>今晚練甚麼?</h1>
         <div class="input">
             <div class="name">
                 <h2>What's your name?</h2><input type="text" name="" id="" v-model="beast">
@@ -92,11 +109,24 @@
             <div class="result">
                 恭喜!{{beast? beast:'你'}}今天完成了{{input.sets}}組 {{input.target=='請選擇'? '':input.target}}，總共做了{{volumn}}KG
             </div>
-            <button @click="done">Done</button>
-            <button @click="cancel">Cancel</button>
-        </div>
-        <div class="done" v-for="(item, index) in doneData" :key="index">
-            <span>{{item.input.date}}</span> <span class="movement">{{item.input.target}}: {{item.volumn}}KG</span><span class="memo">備註:{{item.input.memo? item.input.memo : '無'}}</span><button class="change" @click="changeHandler(index)">修改</button><button class="delete" @click='deleteHandler(index)'>刪除</button>
+            <button @click="done">新增</button>
+            <button @click="cancel">取消</button>
+            <!-- <hr  width="100%"> -->
+            <div class="doneBox">
+                <!-- <header class="part">
+                    <ul>
+                        <li>全部</li>
+                        <li>胸</li>
+                        <li>背</li>
+                        <li>肩</li>
+                        <li>手</li>
+                        <li>腿</li>
+                    </ul>
+                </header> -->
+                <div class="done" v-for="(item, index) in doneData" :key="index">
+                    <span>{{item.input.date}}</span> <span class="movement">{{item.input.target}}: {{item.volumn}}KG</span><span class="memo">備註:{{item.input.memo? item.input.memo : '無'}}</span><button class="change" @click="changeHandler(index)">編輯</button><button class="delete" @click='deleteHandler(index)'>刪除</button>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
